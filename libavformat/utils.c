@@ -3524,6 +3524,8 @@ int avformat_find_stream_info(AVFormatContext *ic, AVDictionary **options)
 
     flush_codecs = probesize > 0;
 
+	av_log(ic, AV_LOG_ERROR, ">>>> program type=%d", ic->program_type);
+
     av_opt_set(ic, "skip_clear", "1", AV_OPT_SEARCH_CHILDREN);
 
     max_stream_analyze_duration = max_analyze_duration;
