@@ -1,1 +1,3 @@
 增加一个文件，看看是不是ijkplayer用到的。
+
+version 3.4
