@@ -3558,16 +3558,6 @@ int avformat_find_stream_info(AVFormatContext *ic, AVDictionary **options)
                 avctx->time_base = st->time_base;
         }
 			
-		av_log(NULL, AV_LOG_DEBUG, "[%d]=========================================================== print options ==== begin", i);
-		if(options) {
-			AVDictionary * d = options[i];
-			AVDictionaryEntry *t = NULL;
-			while ((t = av_dict_get(d, "", t, AV_DICT_IGNORE_SUFFIX))) {
-			    av_log(NULL, AV_LOG_DEBUG, "%s: %s", t->key, t->value);
-			}
-		}
-		av_log(NULL, AV_LOG_DEBUG, "[%d]=========================================================== print options ==== end", i);
-		//av_dict_set(options ? &options[i] : &thread_opt, "threads", "1", 0);
 
         /* check if the caller has overridden the codec id */
 #if FF_API_LAVF_AVCTX
