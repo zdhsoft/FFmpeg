@@ -1327,17 +1327,6 @@ enum AVDurationEstimationMethod {
 
 typedef struct AVFormatInternal AVFormatInternal;
 
-
-/**
-	节目流预设类型
- */
-#define AV_PROGRAM_TYPE_UNKNOW  0  ///<不确定类型
-#define AV_PROGRAM_TYPE_NORMAL  1  ///<普通标清节目 720*576 h264或mpeg2
-#define AV_PROGRAM_TYPE_HIGH  2    ///<高清节目 1920*1080   	h264
-#define AV_PROGRAM_TYPE_SUPER  3   ///<超清节目 1920*1080       高码率mpeg2节目
-#define AV_PROGRAM_TYPE_4K 4       ///<4K节目     3840*2160   hevc(h265)的节目
-
-
 /**
  * Format I/O context.
  * New fields can be added to the end with minor version bumps.
@@ -1505,8 +1494,6 @@ typedef struct AVFormatContext {
      * Can be set to 0 to let avformat choose using a heuristic.
      */
     int64_t max_analyze_duration;
-
-	int32_t program_type;  //节目类型，默认AV_PROGRAM_TYPE_UNKNOW
 
     const uint8_t *key;
     int keylen;
