@@ -3640,6 +3640,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
             av_log(ic, AV_LOG_DEBUG, "interrupted\n");
             break;
         }
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> mm");
 
         /* check if one codec still needs to be handled */
         for (i = 0; i < ic->nb_streams; i++) {
