@@ -3640,8 +3640,6 @@ FF_ENABLE_DEPRECATION_WARNINGS
             av_log(ic, AV_LOG_DEBUG, "interrupted\n");
             break;
         }
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> mm");
-
         /* check if one codec still needs to be handled */
         for (i = 0; i < ic->nb_streams; i++) {
             int fps_analyze_framecount = 1;
@@ -3800,7 +3798,6 @@ FF_ENABLE_DEPRECATION_WARNINGS
             st->info->fps_last_dts     = pkt->dts;
             st->info->fps_last_dts_idx = st->codec_info_nb_frames;
         }
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> qq");
         if (st->codec_info_nb_frames>1) {
             int64_t t = 0;
             int64_t limit;
@@ -3836,25 +3833,19 @@ FF_ENABLE_DEPRECATION_WARNINGS
                 st->info->codec_info_duration_fields += st->parser && st->need_parsing && avctx->ticks_per_frame ==2 ? st->parser->repeat_pict + 1 : 2;
             }
         }
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk %d", count);
 		if(count >= 30) 
 			break;
 		
 #if FF_API_R_FRAME_RATE
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 1");
         if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
             ff_rfps_add_frame(ic, st, pkt->dts);
-			av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 2");
 		}
 #endif
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 3");
         if (!st->internal->avctx->extradata) {
             ret = extract_extradata(st, pkt);
-			av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 4");
             if (ret < 0)
                 goto find_stream_info_err;
         }
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 5");
 
         /* If still no information, we try to open the codec and to
          * decompress the frame. We try to avoid that in most cases as
@@ -3867,14 +3858,12 @@ FF_ENABLE_DEPRECATION_WARNINGS
          * the container. */
         try_decode_frame(ic, st, pkt,
                          (options && i < orig_nb_streams) ? &options[i] : NULL);
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 6");
         if (ic->flags & AVFMT_FLAG_NOBUFFER)
             av_packet_unref(pkt);
 
         st->codec_info_nb_frames++;
         count++;
     }
-	av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> jj");		
     if (eof_reached) {
         int stream_index;
         for (stream_index = 0; stream_index < ic->nb_streams; stream_index++) {
