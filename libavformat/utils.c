@@ -3644,8 +3644,13 @@ FF_ENABLE_DEPRECATION_WARNINGS
             int fps_analyze_framecount = 1;
 
             st = ic->streams[i];
-            if (!has_codec_parameters(st, NULL))
+			const char * strErrorInfo = NULL;
+            if (!has_codec_parameters(st, &strErrorInfo))  {
                 break;
+            }
+			else {
+				av_log(ic, AV_LOG_ERROR, "has_codec_parameters:%s", strErrorInfo);
+			}
 
             if (ic->metadata) {
                 AVDictionaryEntry *t = av_dict_get(ic->metadata, "skip-calc-frame-rate", NULL, AV_DICT_MATCH_CASE);
