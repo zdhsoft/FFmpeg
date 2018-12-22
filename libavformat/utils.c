@@ -3695,7 +3695,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
                  st->codecpar->codec_type == AVMEDIA_TYPE_AUDIO))
                 break;
         }
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> nn");
+		
         analyzed_all_streams = 0;
         if (!missing_streams || !*missing_streams)
         if (i == ic->nb_streams) {
@@ -3711,7 +3711,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
             }
         }
         /* We did not get all the codec info, but we read too much data. */
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> pp");
+		
         if (read_size >= probesize) {
             ret = count;
             av_log(ic, AV_LOG_DEBUG,
@@ -3729,7 +3729,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         /* NOTE: A new stream can be added there if no header in file
          * (AVFMTCTX_NOHEADER). */
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> oo");
+		
         ret = read_frame_internal(ic, &pkt1);
         if (ret == AVERROR(EAGAIN))
             continue;
@@ -3836,16 +3836,22 @@ FF_ENABLE_DEPRECATION_WARNINGS
                 st->info->codec_info_duration_fields += st->parser && st->need_parsing && avctx->ticks_per_frame ==2 ? st->parser->repeat_pict + 1 : 2;
             }
         }
-		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk");		
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk %d", count);		
 #if FF_API_R_FRAME_RATE
-        if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 1");
+        if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
             ff_rfps_add_frame(ic, st, pkt->dts);
+			av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 2");
+		}
 #endif
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 3");
         if (!st->internal->avctx->extradata) {
             ret = extract_extradata(st, pkt);
+			av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 4");
             if (ret < 0)
                 goto find_stream_info_err;
         }
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 5");
 
         /* If still no information, we try to open the codec and to
          * decompress the frame. We try to avoid that in most cases as
@@ -3858,7 +3864,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
          * the container. */
         try_decode_frame(ic, st, pkt,
                          (options && i < orig_nb_streams) ? &options[i] : NULL);
-
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk 6");
         if (ic->flags & AVFMT_FLAG_NOBUFFER)
             av_packet_unref(pkt);
 
