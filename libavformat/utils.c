@@ -3831,6 +3831,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
                 st->info->codec_info_duration_fields += st->parser && st->need_parsing && avctx->ticks_per_frame ==2 ? st->parser->repeat_pict + 1 : 2;
             }
         }
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> kk");		
 #if FF_API_R_FRAME_RATE
         if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
             ff_rfps_add_frame(ic, st, pkt->dts);
@@ -3859,7 +3860,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
         st->codec_info_nb_frames++;
         count++;
     }
-
+	av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> jj");		
     if (eof_reached) {
         int stream_index;
         for (stream_index = 0; stream_index < ic->nb_streams; stream_index++) {
@@ -3885,7 +3886,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
             }
         }
     }
-
+	av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ii");		
     if (flush_codecs) {
         AVPacket empty_pkt = { 0 };
         int err = 0;
@@ -3916,9 +3917,9 @@ FF_ENABLE_DEPRECATION_WARNINGS
         st = ic->streams[i];
         avcodec_close(st->internal->avctx);
     }
-
+	av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> hh");		
     ff_rfps_calculate(ic);
-
+	av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> gg");		
     for (i = 0; i < ic->nb_streams; i++) {
         st = ic->streams[i];
         avctx = st->internal->avctx;
@@ -4010,7 +4011,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
             }
         }
     }
-
+	av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ff");		
     if (probesize)
         estimate_timings(ic, old_offset);
 
@@ -4019,6 +4020,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
     if (ret >= 0 && ic->nb_streams)
         /* We could not have all the codec parameters before EOF. */
         ret = -1;
+	av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ee");		
     for (i = 0; i < ic->nb_streams; i++) {
         const char *errmsg;
         st = ic->streams[i];
@@ -4043,9 +4045,9 @@ FF_ENABLE_DEPRECATION_WARNINGS
             ret = 0;
         }
     }
-
+av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dd");
     compute_chapters_end(ic);
-
+av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> cc");
     /* update the stream parameters from the internal codec contexts */
     for (i = 0; i < ic->nb_streams; i++) {
         st = ic->streams[i];
@@ -4062,7 +4064,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
                 st->codecpar->height = orig_h;
             }
         }
-
+av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> bb");
 #if FF_API_LAVF_AVCTX
 FF_DISABLE_DEPRECATION_WARNINGS
         ret = avcodec_parameters_to_context(st->codec, st->codecpar);
@@ -4103,6 +4105,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
     }
 
 find_stream_info_err:
+	av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> aa");
     for (i = 0; i < ic->nb_streams; i++) {
         st = ic->streams[i];
         if (st->info)
