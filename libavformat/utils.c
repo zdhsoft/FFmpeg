@@ -2910,6 +2910,8 @@ static int has_codec_parameters(AVStream *st, const char **errmsg_ptr)
 #define FAIL(errmsg) do {                                         \
         if (errmsg_ptr)                                           \
             *errmsg_ptr = errmsg;                                 \
+        else														\
+			av_log(NULL, AV_LOG_ERROR, "has_codec_parameters error: %s", errmsg); \
         return 0;                                                 \
     } while (0)
 
@@ -3644,13 +3646,8 @@ FF_ENABLE_DEPRECATION_WARNINGS
             int fps_analyze_framecount = 1;
 
             st = ic->streams[i];
-			const char * strErrorInfo = NULL;
-            if (!has_codec_parameters(st, &strErrorInfo))  {
+            if (!has_codec_parameters(st, NULL))
                 break;
-            }
-			else {
-				av_log(ic, AV_LOG_ERROR, "has_codec_parameters:%s", strErrorInfo);
-			}
 
             if (ic->metadata) {
                 AVDictionaryEntry *t = av_dict_get(ic->metadata, "skip-calc-frame-rate", NULL, AV_DICT_MATCH_CASE);
