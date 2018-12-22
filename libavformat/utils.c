@@ -3695,6 +3695,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
                  st->codecpar->codec_type == AVMEDIA_TYPE_AUDIO))
                 break;
         }
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> nn");
         analyzed_all_streams = 0;
         if (!missing_streams || !*missing_streams)
         if (i == ic->nb_streams) {
@@ -3710,6 +3711,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
             }
         }
         /* We did not get all the codec info, but we read too much data. */
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> pp");
         if (read_size >= probesize) {
             ret = count;
             av_log(ic, AV_LOG_DEBUG,
@@ -3727,6 +3729,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         /* NOTE: A new stream can be added there if no header in file
          * (AVFMTCTX_NOHEADER). */
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> oo");
         ret = read_frame_internal(ic, &pkt1);
         if (ret == AVERROR(EAGAIN))
             continue;
@@ -3797,6 +3800,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
             st->info->fps_last_dts     = pkt->dts;
             st->info->fps_last_dts_idx = st->codec_info_nb_frames;
         }
+		av_log(ic, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> qq");
         if (st->codec_info_nb_frames>1) {
             int64_t t = 0;
             int64_t limit;
