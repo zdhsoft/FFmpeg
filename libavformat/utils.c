@@ -3833,8 +3833,9 @@ FF_ENABLE_DEPRECATION_WARNINGS
                 st->info->codec_info_duration_fields += st->parser && st->need_parsing && avctx->ticks_per_frame ==2 ? st->parser->repeat_pict + 1 : 2;
             }
         }
-		if(count >= 30) 
+		if(count >= 60) {
 			break;
+		}
 		
 #if FF_API_R_FRAME_RATE
         if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
