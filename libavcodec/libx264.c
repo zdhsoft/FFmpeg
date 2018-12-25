@@ -750,6 +750,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
     x4->params.analyse.b_psnr = avctx->flags & AV_CODEC_FLAG_PSNR;
 
     x4->params.i_threads      = avctx->thread_count;
+	av_log(NULL, AV_LOG_ERROR, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>Thread Count=%d", avctx->thread_count);
     if (avctx->thread_type)
         x4->params.b_sliced_threads = avctx->thread_type == FF_THREAD_SLICE;
 
