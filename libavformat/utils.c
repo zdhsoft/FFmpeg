@@ -2910,8 +2910,6 @@ static int has_codec_parameters(AVStream *st, const char **errmsg_ptr)
 #define FAIL(errmsg) do {                                         \
         if (errmsg_ptr)                                           \
             *errmsg_ptr = errmsg;                                 \
-        else														\
-			av_log(NULL, AV_LOG_ERROR, "has_codec_parameters error: %s", errmsg); \
         return 0;                                                 \
     } while (0)
 
@@ -3526,8 +3524,6 @@ int avformat_find_stream_info(AVFormatContext *ic, AVDictionary **options)
 
     flush_codecs = probesize > 0;
 
-	
-
     av_opt_set(ic, "skip_clear", "1", AV_OPT_SEARCH_CHILDREN);
 
     max_stream_analyze_duration = max_analyze_duration;
@@ -3559,7 +3555,6 @@ int avformat_find_stream_info(AVFormatContext *ic, AVDictionary **options)
             if (!avctx->time_base.num)
                 avctx->time_base = st->time_base;
         }
-			
 
         /* check if the caller has overridden the codec id */
 #if FF_API_LAVF_AVCTX
@@ -3640,14 +3635,15 @@ FF_ENABLE_DEPRECATION_WARNINGS
             av_log(ic, AV_LOG_DEBUG, "interrupted\n");
             break;
         }
+
         /* check if one codec still needs to be handled */
         for (i = 0; i < ic->nb_streams; i++) {
-            int fps_analyze_framecount = 1;
+            int fps_analyze_framecount = 20;
 
             st = ic->streams[i];
             if (!has_codec_parameters(st, NULL))
                 break;
-
+/*
             if (ic->metadata) {
                 AVDictionaryEntry *t = av_dict_get(ic->metadata, "skip-calc-frame-rate", NULL, AV_DICT_MATCH_CASE);
                 if (t) {
@@ -3661,6 +3657,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
                     }
                 }
             }
+*/            
             /* If the timebase is coarse (like the usual millisecond precision
              * of mkv), we need to analyze more frames to reliably arrive at
              * the correct fps. */
@@ -3693,7 +3690,6 @@ FF_ENABLE_DEPRECATION_WARNINGS
                  st->codecpar->codec_type == AVMEDIA_TYPE_AUDIO))
                 break;
         }
-		
         analyzed_all_streams = 0;
         if (!missing_streams || !*missing_streams)
         if (i == ic->nb_streams) {
@@ -3709,7 +3705,6 @@ FF_ENABLE_DEPRECATION_WARNINGS
             }
         }
         /* We did not get all the codec info, but we read too much data. */
-		
         if (read_size >= probesize) {
             ret = count;
             av_log(ic, AV_LOG_DEBUG,
@@ -3727,7 +3722,6 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         /* NOTE: A new stream can be added there if no header in file
          * (AVFMTCTX_NOHEADER). */
-		
         ret = read_frame_internal(ic, &pkt1);
         if (ret == AVERROR(EAGAIN))
             continue;
@@ -3833,14 +3827,9 @@ FF_ENABLE_DEPRECATION_WARNINGS
                 st->info->codec_info_duration_fields += st->parser && st->need_parsing && avctx->ticks_per_frame ==2 ? st->parser->repeat_pict + 1 : 2;
             }
         }
-		//if(count >= 60) {
-		//	break;
-		//}
-		
 #if FF_API_R_FRAME_RATE
-        if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+        if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
             ff_rfps_add_frame(ic, st, pkt->dts);
-		}
 #endif
         if (!st->internal->avctx->extradata) {
             ret = extract_extradata(st, pkt);
@@ -3859,12 +3848,14 @@ FF_ENABLE_DEPRECATION_WARNINGS
          * the container. */
         try_decode_frame(ic, st, pkt,
                          (options && i < orig_nb_streams) ? &options[i] : NULL);
+
         if (ic->flags & AVFMT_FLAG_NOBUFFER)
             av_packet_unref(pkt);
 
         st->codec_info_nb_frames++;
         count++;
     }
+
     if (eof_reached) {
         int stream_index;
         for (stream_index = 0; stream_index < ic->nb_streams; stream_index++) {
@@ -3890,6 +3881,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
             }
         }
     }
+
     if (flush_codecs) {
         AVPacket empty_pkt = { 0 };
         int err = 0;
@@ -3920,7 +3912,9 @@ FF_ENABLE_DEPRECATION_WARNINGS
         st = ic->streams[i];
         avcodec_close(st->internal->avctx);
     }
+
     ff_rfps_calculate(ic);
+
     for (i = 0; i < ic->nb_streams; i++) {
         st = ic->streams[i];
         avctx = st->internal->avctx;
@@ -4012,6 +4006,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
             }
         }
     }
+
     if (probesize)
         estimate_timings(ic, old_offset);
 
@@ -4044,7 +4039,9 @@ FF_ENABLE_DEPRECATION_WARNINGS
             ret = 0;
         }
     }
+
     compute_chapters_end(ic);
+
     /* update the stream parameters from the internal codec contexts */
     for (i = 0; i < ic->nb_streams; i++) {
         st = ic->streams[i];
@@ -4061,6 +4058,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
                 st->codecpar->height = orig_h;
             }
         }
+
 #if FF_API_LAVF_AVCTX
 FF_DISABLE_DEPRECATION_WARNINGS
         ret = avcodec_parameters_to_context(st->codec, st->codecpar);
