@@ -3638,12 +3638,12 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         /* check if one codec still needs to be handled */
         for (i = 0; i < ic->nb_streams; i++) {
-            int fps_analyze_framecount = 15;
+            int fps_analyze_framecount = 2;
 
             st = ic->streams[i];
             if (!has_codec_parameters(st, NULL))
                 break;
-/*
+
             if (ic->metadata) {
                 AVDictionaryEntry *t = av_dict_get(ic->metadata, "skip-calc-frame-rate", NULL, AV_DICT_MATCH_CASE);
                 if (t) {
@@ -3657,7 +3657,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
                     }
                 }
             }
-*/            
+            
             /* If the timebase is coarse (like the usual millisecond precision
              * of mkv), we need to analyze more frames to reliably arrive at
              * the correct fps. */
