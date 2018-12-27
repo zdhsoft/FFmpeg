@@ -3638,7 +3638,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         /* check if one codec still needs to be handled */
         for (i = 0; i < ic->nb_streams; i++) {
-            int fps_analyze_framecount = 20;
+            int fps_analyze_framecount = 15;
 
             st = ic->streams[i];
             if (!has_codec_parameters(st, NULL))
@@ -3827,6 +3827,9 @@ FF_ENABLE_DEPRECATION_WARNINGS
                 st->info->codec_info_duration_fields += st->parser && st->need_parsing && avctx->ticks_per_frame ==2 ? st->parser->repeat_pict + 1 : 2;
             }
         }
+		if(count > 30) {
+			break;
+		}
 #if FF_API_R_FRAME_RATE
         if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
             ff_rfps_add_frame(ic, st, pkt->dts);
