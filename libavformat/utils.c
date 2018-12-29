@@ -3854,10 +3854,10 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         st->codec_info_nb_frames++;
         count++;
-		//if(count > 30) {
-		//	eof_reached = 1;
-		//	break;
-		//}
+		if(count > 30) {
+			eof_reached = 1;
+			break;
+		}
     }
 
     if (eof_reached) {
