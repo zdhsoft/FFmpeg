@@ -2910,6 +2910,7 @@ static int has_codec_parameters(AVStream *st, const char **errmsg_ptr)
 #define FAIL(errmsg) do {                                         \
         if (errmsg_ptr)                                           \
             *errmsg_ptr = errmsg;                                 \
+        av_log(NULL, AV_LOG_DEBUG, "has_codec_parameters error:%s", errmsg); \
         return 0;                                                 \
     } while (0)
 
@@ -3638,7 +3639,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         /* check if one codec still needs to be handled */
         for (i = 0; i < ic->nb_streams; i++) {
-            int fps_analyze_framecount = 20;
+            int fps_analyze_framecount = 2;
 
             st = ic->streams[i];
             if (!has_codec_parameters(st, NULL))
@@ -3853,6 +3854,10 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         st->codec_info_nb_frames++;
         count++;
+		if(count > 30) {
+			eof_reached = 1;
+			break;
+		}
     }
 
     if (eof_reached) {
