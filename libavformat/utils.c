@@ -3596,7 +3596,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         /* Force thread count to 1 since the H.264 decoder will not extract
          * SPS and PPS to extradata during multi-threaded decoding. */
-        av_dict_set(options ? &options[i] : &thread_opt, "threads", "1", 0);
+        av_dict_set(options ? &options[i] : &thread_opt, "threads", "8", 0);
 
         if (ic->codec_whitelist)
             av_dict_set(options ? &options[i] : &thread_opt, "codec_whitelist", ic->codec_whitelist, 0);
