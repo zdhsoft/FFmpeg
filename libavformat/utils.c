@@ -2933,7 +2933,7 @@ static int has_codec_parameters(AVStream *st, const char **errmsg_ptr)
         break;
     case AVMEDIA_TYPE_VIDEO:
         if (!avctx->width)
-            FAIL("unspecified size");
+            FAIL("unspecified size(video)");
         if (st->info->found_decoder >= 0 && avctx->pix_fmt == AV_PIX_FMT_NONE)
             FAIL("unspecified pixel format");
         if (st->codecpar->codec_id == AV_CODEC_ID_RV30 || st->codecpar->codec_id == AV_CODEC_ID_RV40)
@@ -2942,7 +2942,7 @@ static int has_codec_parameters(AVStream *st, const char **errmsg_ptr)
         break;
     case AVMEDIA_TYPE_SUBTITLE:
         if (avctx->codec_id == AV_CODEC_ID_HDMV_PGS_SUBTITLE && !avctx->width)
-            FAIL("unspecified size");
+            FAIL("unspecified size(subtitle)");
         break;
     case AVMEDIA_TYPE_DATA:
         if (avctx->codec_id == AV_CODEC_ID_NONE) return 1;
