@@ -3639,7 +3639,7 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         /* check if one codec still needs to be handled */
         for (i = 0; i < ic->nb_streams; i++) {
-            int fps_analyze_framecount = 2;
+            int fps_analyze_framecount = 20;
 
             st = ic->streams[i];
             if (!has_codec_parameters(st, NULL))
@@ -3854,10 +3854,10 @@ FF_ENABLE_DEPRECATION_WARNINGS
 
         st->codec_info_nb_frames++;
         count++;
-		if(count > 30) {
-			eof_reached = 1;
-			break;
-		}
+		//if(count > 30) {
+		//	eof_reached = 1;
+		//	break;
+		//}
     }
 
     if (eof_reached) {
